@@ -1,3 +1,5 @@
+import { unifiedAPI } from './browser-api';
+
 interface HistoryItem {
   id: string;
   url: string;
@@ -38,7 +40,7 @@ class HistorySearcher {
 
   private async loadHistory(): Promise<void> {
     try {
-      const historyItems = await chrome.history.search({
+      const historyItems = await unifiedAPI.history.search({
         text: '',
         maxResults: 10000,
         startTime: Date.now() - (30 * 24 * 60 * 60 * 1000) // Last 30 days
@@ -195,7 +197,7 @@ class HistorySearcher {
 
   private async openUrl(url: string): Promise<void> {
     try {
-      await chrome.tabs.create({ url });
+      await unifiedAPI.tabs.create({ url });
       window.close();
     } catch (error) {
       console.error('Failed to open URL:', error);
@@ -213,7 +215,7 @@ class HistorySearcher {
   // Theme management methods
   private async initTheme(): Promise<void> {
     try {
-      const result = await chrome.storage.sync.get(['theme']);
+      const result = await unifiedAPI.storage.sync.get(['theme']);
       this.currentTheme = (result.theme as Theme) || 'system';
       this.applyTheme();
       this.updateThemeToggleUI();
@@ -253,7 +255,7 @@ class HistorySearcher {
 
   private async saveTheme(): Promise<void> {
     try {
-      await chrome.storage.sync.set({ theme: this.currentTheme });
+      await unifiedAPI.storage.sync.set({ theme: this.currentTheme });
     } catch (error) {
       console.error('Failed to save theme preference:', error);
     }

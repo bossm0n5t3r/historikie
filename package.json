@@ -1,14 +1,19 @@
 {
   "name": "historikie",
   "version": "1.0.0",
-  "description": "Chrome extension for searching browser history with a beautiful popup interface",
+  "description": "Browser extension for searching browser history with a beautiful popup interface (supports Chrome and Firefox)",
   "main": "index.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:chrome": "TARGET_BROWSER=chrome vite build",
+    "build:firefox": "TARGET_BROWSER=firefox vite build",
+    "build:all": "pnpm build:chrome && pnpm build:firefox",
     "preview": "vite preview",
-    "clean": "rm -rf dist",
-    "package": "pnpm build && cd dist && zip -r ../historikie-extension.zip ."
+    "clean": "rm -rf dist dist-chrome dist-firefox",
+    "package": "pnpm package:chrome && pnpm package:firefox",
+    "package:chrome": "pnpm build:chrome && cd dist-chrome && zip -r ../historikie-chrome.zip .",
+    "package:firefox": "pnpm build:firefox && cd dist-firefox && zip -r ../historikie-firefox.zip ."
   },
   "keywords": [
     "chrome-extension",
@@ -21,6 +26,7 @@
   "packageManager": "pnpm@10.11.0",
   "dependencies": {
     "@types/chrome": "^0.1.1",
+    "@types/firefox-webext-browser": "^120.0.4",
     "typescript": "^5.9.2",
     "vite": "^5.0.0"
   },

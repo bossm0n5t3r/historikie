@@ -1,17 +1,18 @@
-# Historikie - Chrome History Search Extension
+# Historikie - Browser History Search Extension
 
-A beautiful Chrome extension built with TypeScript that allows you to search your browser history through a clean,
-modern popup interface.
+A beautiful browser extension built with TypeScript that allows you to search your browser history through a clean,
+modern popup interface. **Now supports both Chrome and Firefox!**
 
 ## Features
 
-- 🔍 **Fast History Search**: Search through your Chrome history with real-time filtering
-- 🎨 **Beautiful UI**: Clean, modern interface
+- 🔍 **Fast History Search**: Search through your browser history with real-time filtering
+- 🎨 **Beautiful UI**: Clean, modern interface with light/dark theme support
 - ⚡ **Instant Results**: Debounced search with immediate feedback
 - 🕒 **Time Display**: Shows when you last visited each page
 - 🌐 **Favicon Support**: Displays website favicons for easy recognition
 - ⌨️ **Keyboard Navigation**: Press Enter to open the first result
-- 📱 **Responsive Design**: Works perfectly in the Chrome extension popup
+- 📱 **Responsive Design**: Works perfectly in browser extension popups
+- 🦊 **Cross-Browser**: Supports both Chrome and Firefox with unified codebase
 
 ## Installation
 
@@ -67,28 +68,47 @@ cp -r public/icons dist/
 ### Architecture
 
 - **Frontend**: TypeScript with vanilla DOM manipulation
-- **Styling**: Embedded CSS with modern design principles
-- **Chrome APIs**: Uses `chrome.history` and `chrome.tabs` APIs
-- **Build System**: TypeScript compiler with manual file copying
+- **Styling**: Embedded CSS with modern design principles and theme support
+- **Cross-Browser APIs**: Uses unified API layer that works with both Chrome and Firefox
+- **Build System**: Vite with custom plugins for multi-browser builds
+- **Compatibility Layer**: Custom browser-api.ts module handles API differences
 
 ### File Structure
 
 ```
-dist/
-├── manifest.json       # Chrome extension manifest
-├── popup.html         # Extension popup interface
-├── popup.js          # Compiled popup functionality
-├── background.js     # Compiled background service worker
-└── icons/
-    └── icon.svg      # Extension icon
+dist-chrome/                # Chrome build output
+├── manifest.json          # Chrome extension manifest (Manifest V3)
+├── popup.html            # Extension popup interface
+├── popup.js             # Compiled popup functionality
+├── background.js        # Compiled background service worker
+├── browser-api.js       # Cross-browser compatibility layer
+└── icons/               # Extension icons
+
+dist-firefox/               # Firefox build output
+├── manifest.json          # Firefox extension manifest (Manifest V2)
+├── popup.html            # Extension popup interface
+├── popup.js             # Compiled popup functionality
+├── background.js        # Compiled background script
+├── browser-api.js       # Cross-browser compatibility layer
+└── icons/               # Extension icons
 ```
+
+### Cross-Browser Compatibility
+
+The extension uses a unified API layer (`browser-api.ts`) that handles differences between:
+
+- **Chrome**: Uses `chrome.*` APIs with callback-based functions
+- **Firefox**: Uses `browser.*` APIs with promise-based functions
+- **Manifest Versions**: Chrome V3 vs Firefox V2 manifest formats
+- **Background Scripts**: Service workers (Chrome) vs background scripts (Firefox)
 
 ### Permissions
 
-The extension requires these Chrome permissions:
+The extension requires these permissions:
 
 - `history`: To read your browsing history
-- `storage`: To store user preferences (future feature)
+- `storage`: To store user preferences and theme settings
+- `tabs`: To open selected history items in new tabs
 
 ## Development
 
@@ -99,10 +119,14 @@ The extension requires these Chrome permissions:
 
 ### Scripts
 
-- `pnpm build`: Full build with Astro (requires newer Node.js)
-- `pnpm build:extension`: TypeScript compilation only
-- `pnpm package`: Create a zip file for distribution
-- `pnpm clean`: Remove dist directory
+- `pnpm build`: Default build (Chrome)
+- `pnpm build:chrome`: Build for Chrome
+- `pnpm build:firefox`: Build for Firefox
+- `pnpm build:all`: Build for both browsers
+- `pnpm package:chrome`: Create Chrome extension zip
+- `pnpm package:firefox`: Create Firefox extension zip
+- `pnpm package:all`: Create both extension zips
+- `pnpm clean`: Remove all dist directories
 
 ### Customization
 
@@ -115,8 +139,8 @@ You can customize the extension by modifying:
 
 ## Privacy
 
-Historikie only accesses your local Chrome history and does not send any data to external servers. All processing
-happens locally on your machine.
+Historikie only accesses your local browser history and does not send any data to external servers. All processing
+happens locally on your machine. This applies to both Chrome and Firefox versions of the extension.
 
 ## License
 
