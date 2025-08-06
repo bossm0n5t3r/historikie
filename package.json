@@ -1,0 +1,30 @@
+{
+  "name": "historikie",
+  "version": "1.0.0",
+  "description": "Chrome extension for searching browser history with a beautiful popup interface",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "clean": "rm -rf dist",
+    "package": "pnpm build && cd dist && zip -r ../historikie-extension.zip ."
+  },
+  "keywords": [
+    "chrome-extension",
+    "history",
+    "search",
+    "browser"
+  ],
+  "author": "bossm0n5t3r",
+  "license": "MIT",
+  "packageManager": "pnpm@10.11.0",
+  "dependencies": {
+    "@types/chrome": "^0.1.1",
+    "typescript": "^5.9.2",
+    "vite": "^5.0.0"
+  },
+  "devDependencies": {
+    "sharp": "^0.34.3"
+  }
+}
