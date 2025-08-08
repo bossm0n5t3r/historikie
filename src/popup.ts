@@ -115,44 +115,73 @@ class HistorySearcher {
   }
 
   private displayResults(items: HistoryItem[]): void {
+    // Clear existing content
+    this.resultsContainer.replaceChildren();
+
     if (items.length === 0) {
-      this.resultsContainer.innerHTML = `
-        <div class="no-results">
-          No history items found matching your search.
-        </div>
-      `;
+      const noResultsDiv = document.createElement('div');
+      noResultsDiv.className = 'no-results';
+      noResultsDiv.textContent = 'No history items found matching your search.';
+      this.resultsContainer.appendChild(noResultsDiv);
       return;
     }
 
-    const resultsHTML = items.map(item => this.createHistoryItemHTML(item)).join('');
-    this.resultsContainer.innerHTML = resultsHTML;
-
-    // Add click listeners to all history items
-    this.resultsContainer.querySelectorAll('.history-item').forEach(element => {
-      element.addEventListener('click', () => {
-        const url = element.getAttribute('data-url');
-        if (url) {
-          this.openUrl(url);
-        }
-      });
+    // Create DOM elements for each item
+    items.forEach(item => {
+      const element = this.createHistoryItemElement(item);
+      this.resultsContainer.appendChild(element);
     });
   }
 
-  private createHistoryItemHTML(item: HistoryItem): string {
+  private createHistoryItemElement(item: HistoryItem): HTMLElement {
     const favicon = this.getFaviconUrl(item.url);
     const timeAgo = this.getTimeAgo(item.lastVisitTime);
     const displayUrl = this.getDisplayUrl(item.url);
 
-    return `
-      <div class="history-item" data-url="${this.escapeHtml(item.url)}">
-        <img class="favicon" src="${favicon}" alt="" onerror="this.style.display='none'">
-        <div class="item-content">
-          <div class="item-title">${this.escapeHtml(item.title)}</div>
-          <div class="item-url">${this.escapeHtml(displayUrl)}</div>
-        </div>
-        <div class="item-time">${timeAgo}</div>
-      </div>
-    `;
+    // Create main container
+    const itemDiv = document.createElement('div');
+    itemDiv.className = 'history-item';
+    itemDiv.setAttribute('data-url', item.url);
+
+    // Create favicon
+    const faviconImg = document.createElement('img');
+    faviconImg.className = 'favicon';
+    faviconImg.src = favicon;
+    faviconImg.alt = '';
+    faviconImg.onerror = () => faviconImg.style.display = 'none';
+
+    // Create content container
+    const contentDiv = document.createElement('div');
+    contentDiv.className = 'item-content';
+
+    // Create title
+    const titleDiv = document.createElement('div');
+    titleDiv.className = 'item-title';
+    titleDiv.textContent = item.title;
+
+    // Create URL
+    const urlDiv = document.createElement('div');
+    urlDiv.className = 'item-url';
+    urlDiv.textContent = displayUrl;
+
+    // Create time
+    const timeDiv = document.createElement('div');
+    timeDiv.className = 'item-time';
+    timeDiv.textContent = timeAgo;
+
+    // Assemble the structure
+    contentDiv.appendChild(titleDiv);
+    contentDiv.appendChild(urlDiv);
+    itemDiv.appendChild(faviconImg);
+    itemDiv.appendChild(contentDiv);
+    itemDiv.appendChild(timeDiv);
+
+    // Add click listener
+    itemDiv.addEventListener('click', () => {
+      this.openUrl(item.url);
+    });
+
+    return itemDiv;
   }
 
   private getFaviconUrl(url: string): string {
@@ -205,11 +234,15 @@ class HistorySearcher {
   }
 
   private showError(message: string): void {
-    this.resultsContainer.innerHTML = `
-      <div class="no-results">
-        ${this.escapeHtml(message)}
-      </div>
-    `;
+    // Clear existing content
+    this.resultsContainer.replaceChildren();
+    
+    // Create error message element
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'no-results';
+    errorDiv.textContent = message;
+    
+    this.resultsContainer.appendChild(errorDiv);
   }
 
   // Theme management methods

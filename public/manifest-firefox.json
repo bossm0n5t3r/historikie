@@ -29,10 +29,10 @@
     "128": "icons/icon-128.png"
   },
   "content_security_policy": "script-src 'self'; object-src 'self'",
-  "applications": {
+  "browser_specific_settings": {
     "gecko": {
       "id": "historikie@bossm0n5t3r.dev",
-      "strict_min_version": "58.0"
+      "strict_min_version": "79.0"
     }
   }
 }
