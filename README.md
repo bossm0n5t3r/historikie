@@ -1,7 +1,12 @@
 # Historikie - Browser History Search Extension
 
-A beautiful browser extension built with TypeScript that allows you to search your browser history through a clean,
+A beautiful browser extension built with TypeScript that allows you to search your browser history
+through a clean,
 modern popup interface. **Now supports both Chrome and Firefox!**
+
+|                                                  Browser                                                   | Install from ...                                                                                                                   |
+|:----------------------------------------------------------------------------------------------------------:|------------------------------------------------------------------------------------------------------------------------------------|
+| <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Google_Chrome_icon_%28February_2022%29.svg"> | <a href="https://chromewebstore.google.com/detail/historikie-history-search/kempjjljlfnohfokeibmfehnjngbehgm">Chrome Web Store</a> |
 
 ## Features
 
@@ -12,7 +17,7 @@ modern popup interface. **Now supports both Chrome and Firefox!**
 - 🌐 **Favicon Support**: Displays website favicons for easy recognition
 - ⌨️ **Keyboard Navigation**: Press Enter to open the first result
 - 📱 **Responsive Design**: Works perfectly in browser extension popups
-- 🦊 **Cross-Browser**: Supports both Chrome and Firefox with unified codebase
+- 🦊 **Cross-Browser**: Supports both Chrome and Firefox with a unified codebase
 
 ## Installation
 
@@ -139,8 +144,9 @@ You can customize the extension by modifying:
 
 ## Privacy
 
-Historikie only accesses your local browser history and does not send any data to external servers. All processing
-happens locally on your machine. This applies to both Chrome and Firefox versions of the extension.
+Historikie only accesses your local browser history and does not send any data to external servers.
+All processing happens locally on your machine. This applies to both Chrome and Firefox versions of
+the extension.
 
 ## License
 
