@@ -4,9 +4,10 @@ A beautiful browser extension built with TypeScript that allows you to search yo
 through a clean,
 modern popup interface. **Now supports both Chrome and Firefox!**
 
-|                                                  Browser                                                   | Install from ...                                                                                                                   |
-|:----------------------------------------------------------------------------------------------------------:|------------------------------------------------------------------------------------------------------------------------------------|
-| <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Google_Chrome_icon_%28February_2022%29.svg"> | <a href="https://chromewebstore.google.com/detail/historikie-history-search/kempjjljlfnohfokeibmfehnjngbehgm">Chrome Web Store</a> |
+|                                                                    Browser                                                                     | Install from ...                                                                                                                   |
+|:----------------------------------------------------------------------------------------------------------------------------------------------:|------------------------------------------------------------------------------------------------------------------------------------|
+|            <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Google_Chrome_icon_%28February_2022%29.svg" width="50px">             | <a href="https://chromewebstore.google.com/detail/historikie-history-search/kempjjljlfnohfokeibmfehnjngbehgm">Chrome Web Store</a> |
+| <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Firefox_logo%2C_2019.svg/500px-Firefox_logo%2C_2019.svg.png" width="50px"> | <a href="https://addons.mozilla.org/en-US/firefox/addon/historikie-history-search/">Firefox Add-ons</a>                            |
 
 ## Features
 
