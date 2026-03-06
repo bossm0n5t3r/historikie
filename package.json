@@ -1,6 +1,6 @@
 {
   "name": "historikie",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "description": "Browser extension for searching browser history with a beautiful popup interface (supports Chrome and Firefox)",
   "main": "index.js",
   "scripts": {
