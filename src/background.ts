@@ -101,11 +101,16 @@ async function handleOpenUrl(url: string, sendResponse: (response: any) => void)
   }
 }
 
-// Handle tab updates to potentially update the history cache
+// Handle tab updates
 unifiedAPI.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-  if (changeInfo.status === 'complete' && tab.url) {
-    // Could implement history cache invalidation here if needed
-    console.log('Tab updated:', tab.url);
+  if (changeInfo.status === 'complete') {
+    // tab.url requires 'tabs' permission. 
+    // In Firefox, it's available. In Chrome, it will be undefined without 'tabs' permission.
+    if (tab.url) {
+      console.log('Tab updated:', tab.url);
+    } else {
+      console.log('Tab updated (no URL):', tabId);
+    }
   }
 });
 
