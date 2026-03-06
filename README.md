@@ -21,23 +21,25 @@ native performance and privacy.
 - ⚡ **Instant Results**: Debounced search with immediate feedback.
 - 🕒 **Time Display**: Shows when you last visited each page.
 - 🌐 **Favicon Support**: Displays website favicons for easy recognition.
+- 📥 **Export History**: Export your history as a JSON file.
 - ⌨️ **Keyboard Navigation**: Press Enter to open the first result.
 - 📱 **Responsive Design**: Works perfectly in browser extension popups.
-- 🦊 **Cross-Browser**: Supports both Chrome and Firefox with a unified codebase.
+- 🦊 **Cross-Browser**: Supports both Chrome (V3) and Firefox (V2) with a unified codebase.
 
 ## 🛠️ Technical Stack
 
-- **Language**: [TypeScript](https://www.typescriptlang.org/)
-- **Bundler**: [Vite](https://vitejs.dev/)
-- **Package Manager**: [pnpm](https://pnpm.io/)
+- **Language**: [TypeScript](https://www.typescriptlang.org/) (v5.9.2)
+- **Bundler**: [Vite](https://vitejs.dev/) (v5.0.0)
+- **Package Manager**: [pnpm](https://pnpm.io/) (v10.11.0)
 - **APIs**: WebExtensions API (with a unified wrapper in `src/browser-api.ts`)
+- **Assets**: [Sharp](https://sharp.pixelplumbing.com/) for icon processing during build
 
 ## 🚀 Getting Started
 
 ### Prerequisites
 
 - [Node.js](https://nodejs.org/) (Recommended: >= 18.0.0)
-- [pnpm](https://pnpm.io/installation)
+- [pnpm](https://pnpm.io/installation) (>= 10.0.0)
 
 ### Installation
 
@@ -60,8 +62,8 @@ Run Vite in development mode:
 pnpm dev
 ```
 
-Note: Since this is a browser extension, `pnpm dev` starts the Vite dev server, but you still need
-to load the extension in your browser for the full functionality.
+**Note**: Since this is a browser extension, `pnpm dev` starts the Vite dev server, but you still
+need to load the extension in your browser for the full functionality.
 
 ### Building the Extension
 
@@ -97,18 +99,18 @@ The output will be in `dist-chrome/` and `dist-firefox/` respectively.
 
 ## 📜 Scripts
 
-| Script                 | Description                                                        |
-|------------------------|--------------------------------------------------------------------|
-| `pnpm dev`             | Starts Vite dev server.                                            |
-| `pnpm build`           | Default build (alias for `vite build`).                            |
-| `pnpm build:chrome`    | Builds the extension for Chrome (`dist-chrome`).                   |
-| `pnpm build:firefox`   | Builds the extension for Firefox (`dist-firefox`).                 |
-| `pnpm build:all`       | Builds for both Chrome and Firefox.                                |
-| `pnpm package`         | Packages both extensions into ZIP files.                           |
-| `pnpm package:chrome`  | Builds and packages the Chrome extension.                          |
-| `pnpm package:firefox` | Builds and packages the Firefox extension.                         |
-| `pnpm clean`           | Removes build directories (`dist`, `dist-chrome`, `dist-firefox`). |
-| `pnpm preview`         | Previews the build using Vite.                                     |
+| Script                 | Description                                                            |
+|------------------------|------------------------------------------------------------------------|
+| `pnpm dev`             | Starts Vite dev server.                                                |
+| `pnpm build`           | Default build (alias for `vite build`).                                |
+| `pnpm build:chrome`    | Builds the extension for Chrome (`dist-chrome`).                       |
+| `pnpm build:firefox`   | Builds the extension for Firefox (`dist-firefox`).                     |
+| `pnpm build:all`       | Builds for both Chrome and Firefox.                                    |
+| `pnpm preview`         | Previews the build using Vite.                                         |
+| `pnpm clean`           | Removes build directories (`dist`, `dist-chrome`, `dist-firefox`).     |
+| `pnpm package`         | Packages both extensions into ZIP files.                               |
+| `pnpm package:chrome`  | Builds and packages the Chrome extension as `historikie-chrome.zip`.   |
+| `pnpm package:firefox` | Builds and packages the Firefox extension as `historikie-firefox.zip`. |
 
 ## 🌍 Environment Variables
 
@@ -122,8 +124,8 @@ TODO: Add unit and integration tests. Currently, the project does not have an au
 
 ```text
 .
-├── dist-chrome/        # Chrome build output
-├── dist-firefox/       # Firefox build output
+├── dist-chrome/        # Chrome build output (V3)
+├── dist-firefox/       # Firefox build output (V2)
 ├── public/             # Static assets
 │   ├── icons/          # Extension icons
 │   ├── manifest.json   # Chrome (V3) manifest
@@ -134,7 +136,9 @@ TODO: Add unit and integration tests. Currently, the project does not have an au
 │   └── popup.ts        # Popup interface logic
 ├── popup.html          # Extension popup entry point
 ├── vite.config.ts      # Vite configuration
-└── tsconfig.json       # TypeScript configuration
+├── tsconfig.json       # TypeScript configuration
+├── pnpm-lock.yaml      # pnpm lockfile
+└── package.json        # Project metadata and scripts
 ```
 
 ## 🔒 Privacy
