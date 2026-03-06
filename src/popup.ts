@@ -27,7 +27,7 @@ class HistorySearcher {
     this.themeToggle = document.getElementById('themeToggle') as HTMLButtonElement;
     this.themeIcon = document.getElementById('themeIcon') as HTMLElement;
     this.themeText = document.getElementById('themeText') as HTMLElement;
-    
+
     this.init();
   }
 
@@ -47,16 +47,16 @@ class HistorySearcher {
       });
 
       this.allHistoryItems = historyItems
-        .filter(item => item.url && item.title)
-        .map(item => ({
-          id: item.id || '',
-          url: item.url || '',
-          title: item.title || '',
-          lastVisitTime: item.lastVisitTime || 0,
-          visitCount: item.visitCount || 0,
-          typedCount: item.typedCount || 0
-        }))
-        .sort((a, b) => b.lastVisitTime - a.lastVisitTime);
+      .filter(item => item.url && item.title)
+      .map(item => ({
+        id: item.id || '',
+        url: item.url || '',
+        title: item.title || '',
+        lastVisitTime: item.lastVisitTime || 0,
+        visitCount: item.visitCount || 0,
+        typedCount: item.typedCount || 0
+      }))
+      .sort((a, b) => b.lastVisitTime - a.lastVisitTime);
     } catch (error) {
       console.error('Failed to load history:', error);
       this.showError('Failed to load history. Please check permissions.');
@@ -105,7 +105,7 @@ class HistorySearcher {
     }
 
     const searchTerms = query.toLowerCase().split(' ').filter(term => term.length > 0);
-    
+
     const filteredItems = this.allHistoryItems.filter(item => {
       const searchableText = `${item.title} ${item.url}`.toLowerCase();
       return searchTerms.every(term => searchableText.includes(term));
@@ -135,7 +135,7 @@ class HistorySearcher {
 
   private createHistoryItemElement(item: HistoryItem): HTMLElement {
     const favicon = this.getFaviconUrl(item.url);
-    const timeAgo = this.getTimeAgo(item.lastVisitTime);
+    const visitTime = this.formatVisitTime(item.lastVisitTime);
     const displayUrl = this.getDisplayUrl(item.url);
 
     // Create main container
@@ -167,7 +167,8 @@ class HistorySearcher {
     // Create time
     const timeDiv = document.createElement('div');
     timeDiv.className = 'item-time';
-    timeDiv.textContent = timeAgo;
+    timeDiv.textContent = visitTime;
+    timeDiv.title = new Date(item.lastVisitTime).toLocaleString();
 
     // Assemble the structure
     contentDiv.appendChild(titleDiv);
@@ -202,20 +203,29 @@ class HistorySearcher {
     }
   }
 
-  private getTimeAgo(timestamp: number): string {
-    const now = Date.now();
-    const diff = now - timestamp;
-    
-    const minutes = Math.floor(diff / (1000 * 60));
-    const hours = Math.floor(diff / (1000 * 60 * 60));
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  private formatVisitTime(timestamp: number): string {
+    const now = new Date();
+    const date = new Date(timestamp);
 
-    if (minutes < 1) return 'Just now';
-    if (minutes < 60) return `${minutes}m ago`;
-    if (hours < 24) return `${hours}h ago`;
-    if (days < 7) return `${days}d ago`;
-    
-    return new Date(timestamp).toLocaleDateString();
+    // Check if it's today
+    const isToday = now.toDateString() === date.toDateString();
+
+    // Check if it's yesterday
+    const yesterday = new Date(now);
+    yesterday.setDate(now.getDate() - 1);
+    const isYesterday = yesterday.toDateString() === date.toDateString();
+
+    const timeStr = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+
+    if (isToday) {
+      return timeStr;
+    } else if (isYesterday) {
+      return `Yesterday ${timeStr}`;
+    } else if (now.getFullYear() === date.getFullYear()) {
+      return date.toLocaleDateString([], { month: 'short', day: 'numeric' }) + ` ${timeStr}`;
+    } else {
+      return date.toLocaleDateString([], { year: 'numeric', month: 'short', day: 'numeric' });
+    }
   }
 
   private escapeHtml(text: string): string {
@@ -236,12 +246,12 @@ class HistorySearcher {
   private showError(message: string): void {
     // Clear existing content
     this.resultsContainer.replaceChildren();
-    
+
     // Create error message element
     const errorDiv = document.createElement('div');
     errorDiv.className = 'no-results';
     errorDiv.textContent = message;
-    
+
     this.resultsContainer.appendChild(errorDiv);
   }
 
@@ -265,7 +275,7 @@ class HistorySearcher {
     const currentIndex = themes.indexOf(this.currentTheme);
     const nextIndex = (currentIndex + 1) % themes.length;
     this.currentTheme = themes[nextIndex];
-    
+
     this.applyTheme();
     this.updateThemeToggleUI();
     this.saveTheme();
@@ -273,7 +283,7 @@ class HistorySearcher {
 
   private applyTheme(): void {
     const body = document.body;
-    
+
     if (this.currentTheme === 'system') {
       const systemTheme = this.getSystemTheme();
       body.setAttribute('data-theme', systemTheme);
