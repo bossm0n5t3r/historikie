@@ -17,6 +17,7 @@ class HistorySearcher {
   private themeToggle: HTMLButtonElement;
   private themeIcon: HTMLElement;
   private themeText: HTMLElement;
+  private exportBtn: HTMLButtonElement;
   private allHistoryItems: HistoryItem[] = [];
   private searchTimeout: number | null = null;
   private currentTheme: Theme = 'system';
@@ -27,6 +28,7 @@ class HistorySearcher {
     this.themeToggle = document.getElementById('themeToggle') as HTMLButtonElement;
     this.themeIcon = document.getElementById('themeIcon') as HTMLElement;
     this.themeText = document.getElementById('themeText') as HTMLElement;
+    this.exportBtn = document.getElementById('exportBtn') as HTMLButtonElement;
 
     this.init();
   }
@@ -82,6 +84,11 @@ class HistorySearcher {
     // Theme toggle event listener
     this.themeToggle.addEventListener('click', () => {
       this.cycleTheme();
+    });
+
+    // Export history event listener
+    this.exportBtn.addEventListener('click', () => {
+      this.exportHistory();
     });
 
     // Focus search input when popup opens
@@ -240,6 +247,32 @@ class HistorySearcher {
       window.close();
     } catch (error) {
       console.error('Failed to open URL:', error);
+    }
+  }
+
+  private exportHistory(): void {
+    if (this.allHistoryItems.length === 0) {
+      this.showError('No history items to export.');
+      return;
+    }
+
+    try {
+      const data = JSON.stringify(this.allHistoryItems, null, 2);
+      const blob = new Blob([data], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+      const filename = `historikie-history-${timestamp}.json`;
+
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Failed to export history:', error);
+      alert('Failed to export history. Please try again.');
     }
   }
 
