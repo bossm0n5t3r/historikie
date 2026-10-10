@@ -10,15 +10,21 @@ export default defineConfig({
     outDir: `./dist-${browser}`,
     rollupOptions: {
       input: {
-        popup: resolve(fileURLToPath(new URL('.', import.meta.url)), 'popup.html'),
-        background: resolve(fileURLToPath(new URL('.', import.meta.url)), 'src/background.ts')
+        popup: resolve(
+          fileURLToPath(new URL('.', import.meta.url)),
+          'popup.html',
+        ),
+        background: resolve(
+          fileURLToPath(new URL('.', import.meta.url)),
+          'src/background.ts',
+        ),
       },
       output: {
         entryFileNames: '[name].js',
         chunkFileNames: '[name].js',
-        assetFileNames: '[name].[ext]'
-      }
-    }
+        assetFileNames: '[name].[ext]',
+      },
+    },
   },
   publicDir: './public',
   plugins: [
@@ -29,14 +35,15 @@ export default defineConfig({
         if (!existsSync(distDir)) {
           mkdirSync(distDir, { recursive: true });
         }
-        
-        const manifestSrc = browser === 'firefox' 
-          ? './public/manifest-firefox.json' 
-          : './public/manifest.json';
-        
+
+        const manifestSrc =
+          browser === 'firefox'
+            ? './public/manifest-firefox.json'
+            : './public/manifest.json';
+
         copyFileSync(manifestSrc, `${distDir}/manifest.json`);
         console.log(`Copied ${manifestSrc} to ${distDir}/manifest.json`);
-      }
-    }
-  ]
+      },
+    },
+  ],
 });
