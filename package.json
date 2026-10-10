@@ -15,7 +15,8 @@
     "clean": "rm -rf dist dist-chrome dist-firefox",
     "package": "pnpm package:chrome && pnpm package:firefox",
     "package:chrome": "rm -f historikie-chrome.zip && pnpm build:chrome && find dist-chrome -name '.DS_Store' -type f -delete && find dist-chrome -name '._*' -type f -delete && cd dist-chrome && zip -r ../historikie-chrome.zip .",
-    "package:firefox": "rm -f historikie-firefox.zip && pnpm build:firefox && find dist-firefox -name '.DS_Store' -type f -delete && find dist-firefox -name '._*' -type f -delete && cd dist-firefox && zip -r ../historikie-firefox.zip ."
+    "package:firefox": "rm -f historikie-firefox.zip && pnpm build:firefox && find dist-firefox -name '.DS_Store' -type f -delete && find dist-firefox -name '._*' -type f -delete && cd dist-firefox && zip -r ../historikie-firefox.zip .",
+    "package:source": "rm -f historikie-source.zip && zip -r historikie-source.zip src public popup.html vite.config.mts tsconfig.json package.json pnpm-lock.yaml README.md -x '*/.DS_Store' '*/._*'"
   },
   "keywords": [
     "chrome-extension",

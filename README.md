@@ -100,20 +100,21 @@ The output will be in `dist-chrome/` and `dist-firefox/` respectively.
 
 ## 📜 Scripts
 
-| Script                 | Description                                                            |
-| ---------------------- | ---------------------------------------------------------------------- |
-| `pnpm dev`             | Starts Vite dev server.                                                |
-| `pnpm format`          | Formats project files with Prettier, excluding ignored files.          |
-| `pnpm check`           | Checks formatting without modifying files.                             |
-| `pnpm build`           | Default build (alias for `vite build`).                                |
-| `pnpm build:chrome`    | Builds the extension for Chrome (`dist-chrome`).                       |
-| `pnpm build:firefox`   | Builds the extension for Firefox (`dist-firefox`).                     |
-| `pnpm build:all`       | Builds for both Chrome and Firefox.                                    |
-| `pnpm preview`         | Previews the build using Vite.                                         |
-| `pnpm clean`           | Removes build directories (`dist`, `dist-chrome`, `dist-firefox`).     |
-| `pnpm package`         | Packages both extensions into ZIP files.                               |
-| `pnpm package:chrome`  | Builds and packages the Chrome extension as `historikie-chrome.zip`.   |
-| `pnpm package:firefox` | Builds and packages the Firefox extension as `historikie-firefox.zip`. |
+| Script                 | Description                                                             |
+| ---------------------- | ----------------------------------------------------------------------- |
+| `pnpm dev`             | Starts Vite dev server.                                                 |
+| `pnpm format`          | Formats project files with Prettier, excluding ignored files.           |
+| `pnpm check`           | Checks formatting without modifying files.                              |
+| `pnpm build`           | Default build (alias for `vite build`).                                 |
+| `pnpm build:chrome`    | Builds the extension for Chrome (`dist-chrome`).                        |
+| `pnpm build:firefox`   | Builds the extension for Firefox (`dist-firefox`).                      |
+| `pnpm build:all`       | Builds for both Chrome and Firefox.                                     |
+| `pnpm preview`         | Previews the build using Vite.                                          |
+| `pnpm clean`           | Removes build directories (`dist`, `dist-chrome`, `dist-firefox`).      |
+| `pnpm package`         | Packages both extensions into ZIP files.                                |
+| `pnpm package:chrome`  | Builds and packages the Chrome extension as `historikie-chrome.zip`.    |
+| `pnpm package:firefox` | Builds and packages the Firefox extension as `historikie-firefox.zip`.  |
+| `pnpm package:source`  | Packages original source for Mozilla review as `historikie-source.zip`. |
 
 ## 🌍 Environment Variables
 
