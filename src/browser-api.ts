@@ -10,7 +10,7 @@ const browserAPI = isFirefox ? browser : chrome;
 
 // Promisify Chrome APIs for consistency with Firefox's promise-based APIs
 function promisify<T extends any[], R>(
-  fn: (...args: [...T, (result: R) => void]) => void
+  fn: (...args: [...T, (result: R) => void]) => void,
 ): (...args: T) => Promise<R> {
   return (...args: T): Promise<R> => {
     return new Promise((resolve, reject) => {

@@ -10,7 +10,7 @@ unifiedAPI.runtime.onInstalled.addListener(async (details) => {
     await unifiedAPI.storage.sync.set({
       maxHistoryItems: 10000,
       searchTimeRange: 30, // days
-      enableFavicons: true
+      enableFavicons: true,
     });
   }
 });
@@ -38,65 +38,76 @@ if (unifiedAPI.commands.onCommand) {
 }
 
 // Handle messages from popup or content scripts
-unifiedAPI.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
-  console.log('Message received:', message);
+unifiedAPI.runtime.onMessage.addListener(
+  async (message, sender, sendResponse) => {
+    console.log('Message received:', message);
 
-  switch (message.type) {
-    case 'GET_HISTORY':
-      await handleGetHistory(message.query, sendResponse);
-      return true; // Keep the message channel open for async response
+    switch (message.type) {
+      case 'GET_HISTORY':
+        await handleGetHistory(message.query, sendResponse);
+        return true; // Keep the message channel open for async response
 
-    case 'OPEN_URL':
-      await handleOpenUrl(message.url, sendResponse);
-      return true;
+      case 'OPEN_URL':
+        await handleOpenUrl(message.url, sendResponse);
+        return true;
 
-    default:
-      console.warn('Unknown message type:', message.type);
-  }
-});
+      default:
+        console.warn('Unknown message type:', message.type);
+    }
+  },
+);
 
 // Handle history search requests
-async function handleGetHistory(query: string, sendResponse: (response: any) => void) {
+async function handleGetHistory(
+  query: string,
+  sendResponse: (response: any) => void,
+) {
   try {
     const settings = await unifiedAPI.storage.sync.get({
       maxHistoryItems: 10000,
-      searchTimeRange: 30
+      searchTimeRange: 30,
     });
 
-    const startTime = Date.now() - (settings.searchTimeRange * 24 * 60 * 60 * 1000);
+    const startTime =
+      Date.now() - settings.searchTimeRange * 24 * 60 * 60 * 1000;
 
     const historyItems = await unifiedAPI.history.search({
       text: query || '',
       maxResults: settings.maxHistoryItems,
-      startTime: startTime
+      startTime: startTime,
     });
 
     sendResponse({
       success: true,
-      data: historyItems
+      data: historyItems,
     });
   } catch (error) {
     console.error('Failed to search history:', error);
     sendResponse({
       success: false,
-      error: error instanceof Error ? error.message : 'An unknown error occurred'
+      error:
+        error instanceof Error ? error.message : 'An unknown error occurred',
     });
   }
 }
 
 // Handle URL opening requests
-async function handleOpenUrl(url: string, sendResponse: (response: any) => void) {
+async function handleOpenUrl(
+  url: string,
+  sendResponse: (response: any) => void,
+) {
   try {
     const tab = await unifiedAPI.tabs.create({ url });
     sendResponse({
       success: true,
-      tabId: tab.id
+      tabId: tab.id,
     });
   } catch (error) {
     console.error('Failed to open URL:', error);
     sendResponse({
       success: false,
-      error: error instanceof Error ? error.message : 'An unknown error occurred'
+      error:
+        error instanceof Error ? error.message : 'An unknown error occurred',
     });
   }
 }
@@ -104,7 +115,7 @@ async function handleOpenUrl(url: string, sendResponse: (response: any) => void)
 // Handle tab updates
 unifiedAPI.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   if (changeInfo.status === 'complete') {
-    // tab.url requires 'tabs' permission. 
+    // tab.url requires 'tabs' permission.
     // In Firefox, it's available. In Chrome, it will be undefined without 'tabs' permission.
     if (tab.url) {
       console.log('Tab updated:', tab.url);

@@ -24,9 +24,15 @@ class HistorySearcher {
   private resetCopyFeedback: (() => void) | null = null;
 
   constructor() {
-    this.searchInput = document.getElementById('searchInput') as HTMLInputElement;
-    this.resultsContainer = document.getElementById('resultsContainer') as HTMLElement;
-    this.themeToggle = document.getElementById('themeToggle') as HTMLButtonElement;
+    this.searchInput = document.getElementById(
+      'searchInput',
+    ) as HTMLInputElement;
+    this.resultsContainer = document.getElementById(
+      'resultsContainer',
+    ) as HTMLElement;
+    this.themeToggle = document.getElementById(
+      'themeToggle',
+    ) as HTMLButtonElement;
     this.themeIcon = document.getElementById('themeIcon') as HTMLElement;
     this.themeText = document.getElementById('themeText') as HTMLElement;
     this.exportBtn = document.getElementById('exportBtn') as HTMLButtonElement;
@@ -46,20 +52,20 @@ class HistorySearcher {
       const historyItems = await unifiedAPI.history.search({
         text: '',
         maxResults: 10000,
-        startTime: Date.now() - (30 * 24 * 60 * 60 * 1000) // Last 30 days
+        startTime: Date.now() - 30 * 24 * 60 * 60 * 1000, // Last 30 days
       });
 
       this.allHistoryItems = historyItems
-      .filter(item => item.url && item.title)
-      .map(item => ({
-        id: item.id || '',
-        url: item.url || '',
-        title: item.title || '',
-        lastVisitTime: item.lastVisitTime || 0,
-        visitCount: item.visitCount || 0,
-        typedCount: item.typedCount || 0
-      }))
-      .sort((a, b) => b.lastVisitTime - a.lastVisitTime);
+        .filter((item) => item.url && item.title)
+        .map((item) => ({
+          id: item.id || '',
+          url: item.url || '',
+          title: item.title || '',
+          lastVisitTime: item.lastVisitTime || 0,
+          visitCount: item.visitCount || 0,
+          typedCount: item.typedCount || 0,
+        }))
+        .sort((a, b) => b.lastVisitTime - a.lastVisitTime);
     } catch (error) {
       console.error('Failed to load history:', error);
       this.showError('Failed to load history. Please check permissions.');
@@ -75,7 +81,9 @@ class HistorySearcher {
     this.searchInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         e.preventDefault();
-        const firstResult = this.resultsContainer.querySelector('.history-item') as HTMLElement;
+        const firstResult = this.resultsContainer.querySelector(
+          '.history-item',
+        ) as HTMLElement;
         if (firstResult) {
           firstResult.click();
         }
@@ -112,11 +120,14 @@ class HistorySearcher {
       return;
     }
 
-    const searchTerms = query.toLowerCase().split(' ').filter(term => term.length > 0);
+    const searchTerms = query
+      .toLowerCase()
+      .split(' ')
+      .filter((term) => term.length > 0);
 
-    const filteredItems = this.allHistoryItems.filter(item => {
+    const filteredItems = this.allHistoryItems.filter((item) => {
       const searchableText = `${item.title} ${item.url}`.toLowerCase();
-      return searchTerms.every(term => searchableText.includes(term));
+      return searchTerms.every((term) => searchableText.includes(term));
     });
 
     this.displayResults(filteredItems.slice(0, 100));
@@ -137,7 +148,7 @@ class HistorySearcher {
     }
 
     // Create DOM elements for each item
-    items.forEach(item => {
+    items.forEach((item) => {
       const element = this.createHistoryItemElement(item);
       this.resultsContainer.appendChild(element);
     });
@@ -158,7 +169,7 @@ class HistorySearcher {
     faviconImg.className = 'favicon';
     faviconImg.src = favicon;
     faviconImg.alt = '';
-    faviconImg.onerror = () => faviconImg.style.display = 'none';
+    faviconImg.onerror = () => (faviconImg.style.display = 'none');
 
     // Create content container
     const contentDiv = document.createElement('div');
@@ -186,7 +197,10 @@ class HistorySearcher {
     const copyBtn = document.createElement('button');
     copyBtn.type = 'button';
     copyBtn.className = 'action-btn copy-url-btn';
-    const copyIcon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    const copyIcon = document.createElementNS(
+      'http://www.w3.org/2000/svg',
+      'svg',
+    );
     copyIcon.setAttribute('viewBox', '0 0 24 24');
     copyIcon.setAttribute('width', '16');
     copyIcon.setAttribute('height', '16');
@@ -196,7 +210,10 @@ class HistorySearcher {
     copyIcon.setAttribute('stroke-linecap', 'round');
     copyIcon.setAttribute('stroke-linejoin', 'round');
     copyIcon.setAttribute('aria-hidden', 'true');
-    const iconPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    const iconPath = document.createElementNS(
+      'http://www.w3.org/2000/svg',
+      'path',
+    );
     iconPath.setAttribute('d', 'M9 9h12v12H9z M15 9V3H3v12h6');
     copyIcon.appendChild(iconPath);
     copyBtn.appendChild(copyIcon);
@@ -223,7 +240,10 @@ class HistorySearcher {
         console.error('Failed to copy URL:', error);
         if (this.resetCopyFeedback !== resetFeedback) return;
         iconPath.setAttribute('d', 'M12 8v5 M12 17h.01 M12 3L2 21h20z');
-        copyBtn.setAttribute('aria-label', `Copy failed. Retry copying URL for ${item.title}`);
+        copyBtn.setAttribute(
+          'aria-label',
+          `Copy failed. Retry copying URL for ${item.title}`,
+        );
         copyBtn.title = 'Copy failed. Click to retry.';
       } finally {
         copyBtn.disabled = false;
@@ -277,16 +297,27 @@ class HistorySearcher {
     yesterday.setDate(now.getDate() - 1);
     const isYesterday = yesterday.toDateString() === date.toDateString();
 
-    const timeStr = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+    const timeStr = date.toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    });
 
     if (isToday) {
       return timeStr;
     } else if (isYesterday) {
       return `Yesterday ${timeStr}`;
     } else if (now.getFullYear() === date.getFullYear()) {
-      return date.toLocaleDateString([], { month: 'short', day: 'numeric' }) + ` ${timeStr}`;
+      return (
+        date.toLocaleDateString([], { month: 'short', day: 'numeric' }) +
+        ` ${timeStr}`
+      );
     } else {
-      return date.toLocaleDateString([], { year: 'numeric', month: 'short', day: 'numeric' });
+      return date.toLocaleDateString([], {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+      });
     }
   }
 
@@ -315,7 +346,10 @@ class HistorySearcher {
       const data = JSON.stringify(this.allHistoryItems, null, 2);
       const blob = new Blob([data], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
-      const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+      const timestamp = new Date()
+        .toISOString()
+        .replace(/[:.]/g, '-')
+        .slice(0, 19);
       const filename = `historikie-history-${timestamp}.json`;
 
       const link = document.createElement('a');
@@ -381,7 +415,9 @@ class HistorySearcher {
   }
 
   private getSystemTheme(): 'light' | 'dark' {
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    return window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light';
   }
 
   private async saveTheme(): Promise<void> {
@@ -396,7 +432,7 @@ class HistorySearcher {
     const themeConfig = {
       light: { icon: '☀️', text: 'Light' },
       dark: { icon: '🌙', text: 'Dark' },
-      system: { icon: '💻', text: 'System' }
+      system: { icon: '💻', text: 'System' },
     };
 
     const config = themeConfig[this.currentTheme];
