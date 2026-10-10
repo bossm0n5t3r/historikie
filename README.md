@@ -4,7 +4,7 @@ A beautiful browser extension built with TypeScript that allows you to search yo
 through a clean, modern popup interface. **Supports both Chrome and Firefox!**
 
 |                                                                    Browser                                                                     | Install from ...                                                                                                        |
-|:----------------------------------------------------------------------------------------------------------------------------------------------:|-------------------------------------------------------------------------------------------------------------------------|
+| :--------------------------------------------------------------------------------------------------------------------------------------------: | ----------------------------------------------------------------------------------------------------------------------- |
 |            <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Google_Chrome_icon_%28February_2022%29.svg" width="50px">             | [Chrome Web Store](https://chromewebstore.google.com/detail/historikie-history-search/kempjjljlfnohfokeibmfehnjngbehgm) |
 | <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Firefox_logo%2C_2019.svg/500px-Firefox_logo%2C_2019.svg.png" width="50px"> | [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/historikie-history-search/)                            |
 
@@ -30,21 +30,21 @@ native performance and privacy.
 ## 🛠️ Technical Stack
 
 - **Language**: [TypeScript](https://www.typescriptlang.org/) (v5.9.2)
-- **Bundler**: [Vite](https://vitejs.dev/) (v5.0.0)
+- **Bundler**: [Vite](https://vitejs.dev/) (v8.3.4)
 - **Package Manager**: [pnpm](https://pnpm.io/) (v10.11.0)
 - **APIs**: WebExtensions API (with a unified wrapper in `src/browser-api.ts`)
-- **Assets**: [Sharp](https://sharp.pixelplumbing.com/) for icon processing during build
 
 ## 🚀 Getting Started
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) (Recommended: >= 18.0.0)
+- [Node.js](https://nodejs.org/) (24.x)
 - [pnpm](https://pnpm.io/installation) (>= 10.0.0)
 
 ### Installation
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/bossm0n5t3r/historikie.git
    cd historikie
@@ -101,8 +101,10 @@ The output will be in `dist-chrome/` and `dist-firefox/` respectively.
 ## 📜 Scripts
 
 | Script                 | Description                                                            |
-|------------------------|------------------------------------------------------------------------|
+| ---------------------- | ---------------------------------------------------------------------- |
 | `pnpm dev`             | Starts Vite dev server.                                                |
+| `pnpm format`          | Formats project files with Prettier, excluding ignored files.          |
+| `pnpm check`           | Checks formatting without modifying files.                             |
 | `pnpm build`           | Default build (alias for `vite build`).                                |
 | `pnpm build:chrome`    | Builds the extension for Chrome (`dist-chrome`).                       |
 | `pnpm build:firefox`   | Builds the extension for Firefox (`dist-firefox`).                     |
@@ -136,7 +138,7 @@ TODO: Add unit and integration tests. Currently, the project does not have an au
 │   ├── browser-api.ts  # Unified browser API wrapper
 │   └── popup.ts        # Popup interface logic
 ├── popup.html          # Extension popup entry point
-├── vite.config.ts      # Vite configuration
+├── vite.config.mts     # Vite configuration
 ├── tsconfig.json       # TypeScript configuration
 ├── pnpm-lock.yaml      # pnpm lockfile
 └── package.json        # Project metadata and scripts
