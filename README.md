@@ -22,6 +22,7 @@ native performance and privacy.
 - 🕒 **Time Display**: Shows when you last visited each page.
 - 🌐 **Favicon Support**: Displays website favicons for easy recognition.
 - 📥 **Export History**: Export your history as a JSON file.
+- 📋 **Copy URL**: Copy a page's full URL without opening a new tab.
 - ⌨️ **Keyboard Navigation**: Press Enter to open the first result.
 - 📱 **Responsive Design**: Works perfectly in browser extension popups.
 - 🦊 **Cross-Browser**: Supports both Chrome (V3) and Firefox (V2) with a unified codebase.

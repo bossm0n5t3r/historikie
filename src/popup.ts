@@ -21,6 +21,7 @@ class HistorySearcher {
   private allHistoryItems: HistoryItem[] = [];
   private searchTimeout: number | null = null;
   private currentTheme: Theme = 'system';
+  private resetCopyFeedback: (() => void) | null = null;
 
   constructor() {
     this.searchInput = document.getElementById('searchInput') as HTMLInputElement;
@@ -122,6 +123,8 @@ class HistorySearcher {
   }
 
   private displayResults(items: HistoryItem[]): void {
+    this.resetCopyFeedback?.();
+    this.resetCopyFeedback = null;
     // Clear existing content
     this.resultsContainer.replaceChildren();
 
@@ -177,12 +180,64 @@ class HistorySearcher {
     timeDiv.textContent = visitTime;
     timeDiv.title = new Date(item.lastVisitTime).toLocaleString();
 
+    const actionsDiv = document.createElement('div');
+    actionsDiv.className = 'item-actions';
+
+    const copyBtn = document.createElement('button');
+    copyBtn.type = 'button';
+    copyBtn.className = 'action-btn copy-url-btn';
+    const copyIcon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    copyIcon.setAttribute('viewBox', '0 0 24 24');
+    copyIcon.setAttribute('width', '16');
+    copyIcon.setAttribute('height', '16');
+    copyIcon.setAttribute('fill', 'none');
+    copyIcon.setAttribute('stroke', 'currentColor');
+    copyIcon.setAttribute('stroke-width', '2');
+    copyIcon.setAttribute('stroke-linecap', 'round');
+    copyIcon.setAttribute('stroke-linejoin', 'round');
+    copyIcon.setAttribute('aria-hidden', 'true');
+    const iconPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    iconPath.setAttribute('d', 'M9 9h12v12H9z M15 9V3H3v12h6');
+    copyIcon.appendChild(iconPath);
+    copyBtn.appendChild(copyIcon);
+    copyBtn.title = 'Copy full URL';
+    copyBtn.setAttribute('aria-label', `Copy URL for ${item.title}`);
+    copyBtn.setAttribute('aria-live', 'polite');
+    copyBtn.addEventListener('click', async (event) => {
+      event.stopPropagation();
+      this.resetCopyFeedback?.();
+      const resetFeedback = () => {
+        iconPath.setAttribute('d', 'M9 9h12v12H9z M15 9V3H3v12h6');
+        copyBtn.title = 'Copy full URL';
+        copyBtn.setAttribute('aria-label', `Copy URL for ${item.title}`);
+      };
+      this.resetCopyFeedback = resetFeedback;
+      copyBtn.disabled = true;
+      try {
+        await navigator.clipboard.writeText(item.url);
+        if (this.resetCopyFeedback !== resetFeedback) return;
+        iconPath.setAttribute('d', 'M5 12l4 4L19 6');
+        copyBtn.setAttribute('aria-label', `URL copied for ${item.title}`);
+        copyBtn.title = 'URL copied';
+      } catch (error) {
+        console.error('Failed to copy URL:', error);
+        if (this.resetCopyFeedback !== resetFeedback) return;
+        iconPath.setAttribute('d', 'M12 8v5 M12 17h.01 M12 3L2 21h20z');
+        copyBtn.setAttribute('aria-label', `Copy failed. Retry copying URL for ${item.title}`);
+        copyBtn.title = 'Copy failed. Click to retry.';
+      } finally {
+        copyBtn.disabled = false;
+      }
+    });
+
     // Assemble the structure
     contentDiv.appendChild(titleDiv);
     contentDiv.appendChild(urlDiv);
     itemDiv.appendChild(faviconImg);
     itemDiv.appendChild(contentDiv);
-    itemDiv.appendChild(timeDiv);
+    actionsDiv.appendChild(timeDiv);
+    actionsDiv.appendChild(copyBtn);
+    itemDiv.appendChild(actionsDiv);
 
     // Add click listener
     itemDiv.addEventListener('click', () => {
